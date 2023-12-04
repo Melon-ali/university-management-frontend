@@ -40,7 +40,7 @@ const CreateAdmin = () => {
             <h1>Create Admin</h1>
 
             <div>
-                <Form submitHandler={onSubmit}>
+                <Form submitHandler={onSubmit} resolver={yupResolver()}>
                     <div style={{
                         border: "1px solid #d9d9d9",
                         borderRadius: "5px",
