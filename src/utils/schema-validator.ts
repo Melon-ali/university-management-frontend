@@ -14,7 +14,7 @@ export const getErrorMessageByPropertyName = (obj: Record< string, any>, propert
             value = value[prop]
         }
         else {
-            return undefined
+            return undefined;
         }
     }
 

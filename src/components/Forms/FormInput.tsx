@@ -28,7 +28,7 @@ const FormInput = ({
 
     const {control, formState: {errors},} = useFormContext();
 
-    const errormessage = getErrorMessageByPropertyName(errors, name)
+    const errorMessage = getErrorMessageByPropertyName(errors, name)
 
   return (
     <>
@@ -55,7 +55,7 @@ const FormInput = ({
         )}
     />
     <small style={{color: "red"}}>
-        {errormessage}
+        {errorMessage}
     </small>
     </>
   )
