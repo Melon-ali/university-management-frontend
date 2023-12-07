@@ -26,11 +26,13 @@ export const axiosBaseQuery =
         method,
         data,
         params,
-        headers: {contentType: contentType},
+        headers: {
+          contentType: contentType || "application/json"
+        }
       })
       return result;
     } catch (axiosError) {
-      const err = axiosError as AxiosError
+      let err = axiosError as AxiosError
       return {
         error: {
           status: err.response?.status,

@@ -14,9 +14,9 @@ export const departmentApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response: IDepartment, meta: IMeta) => {
         return {
-          departmens: response,
+          departments: response,
           meta,
-        };
+        }
       },
       providesTags: [tagTypes.department],
     }),
@@ -25,7 +25,7 @@ export const departmentApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: DEPARTMENT_URL,
         method: "POST",
-        data: data,
+        data,
       }),
       invalidatesTags: [tagTypes.department],
     }),
