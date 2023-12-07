@@ -14,11 +14,12 @@ import { Button, Input } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import ActionBar from "@/components/ui/ActionBar";
+import { useDebounced } from "@/redux/hooks";
 
 const ManageDepartmentPage = () => {
   const query: Record<string, any> = {};
-  const [size, setSize] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
+  const [size, setSize] = useState<number>(2);
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -27,7 +28,16 @@ const ManageDepartmentPage = () => {
   query["page"] = page;
   query["sortBy"] = sortBy;
   query["sortOrder"] = sortOrder;
-  query["searchTerm"] = searchTerm;
+  // query["searchTerm"] = searchTerm;
+
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+      delay: 600
+  });
+
+  if (!!debouncedTerm){
+    query["searchTerm"] = searchTerm;
+  }
 
   const { data, isLoading } = useDepartmentsQuery({ ...query });
 
