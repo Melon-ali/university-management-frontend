@@ -8,9 +8,12 @@ import {
 } from "@ant-design/icons";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UMTable from "@/components/ui/UMTable";
-import { useDepartmentsQuery } from "@/redux/api/departmentApi";
+import {
+  useDeleteDepartmentMutation,
+  useDepartmentsQuery,
+} from "@/redux/api/departmentApi";
 import { getUserInfo } from "@/services/auth.service";
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import ActionBar from "@/components/ui/ActionBar";
@@ -20,10 +23,11 @@ import dayjs from "dayjs";
 const ManageDepartmentPage = () => {
   const query: Record<string, any> = {};
   const [page, setPage] = useState<number>(1);
-  const [size, setSize] = useState<number>(2);
+  const [size, setSize] = useState<number>(10);
   const [sortBy, setSortBy] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [deleteDepartment] = useDeleteDepartmentMutation();
 
   query["limit"] = size;
   query["page"] = page;
@@ -33,10 +37,10 @@ const ManageDepartmentPage = () => {
 
   const debouncedTerm = useDebounced({
     searchQuery: searchTerm,
-      delay: 600
+    delay: 600,
   });
 
-  if (!!debouncedTerm){
+  if (!!debouncedTerm) {
     query["searchTerm"] = searchTerm;
   }
 
@@ -44,6 +48,17 @@ const ManageDepartmentPage = () => {
 
   const departments = data?.departments;
   const meta = data?.meta;
+
+  const deleteHandler = async (id: string) => {
+    message.loading("Deleting.....");
+    try {
+      await deleteDepartment(id);
+      message.success("Department Deleted succesfully");
+    } catch (err: any) {
+      // console.error(err.message)
+      message.error(err.message);
+    }
+  };
 
   const columns = [
     {
@@ -53,7 +68,7 @@ const ManageDepartmentPage = () => {
     {
       title: "CreatedAt",
       dataIndex: "createdAt",
-      render: function (data: any){
+      render: function (data: any) {
         return data && dayjs(data).format("MMM D, YYYY hh:mm A");
       },
       sorter: true,
@@ -72,7 +87,11 @@ const ManageDepartmentPage = () => {
                 <EditOutlined />
               </Button>
             </Link>
-            <Button onClick={() => console.log(data)} type="primary" danger>
+            <Button
+              onClick={() => deleteHandler(data?.id)}
+              type="primary"
+              danger
+            >
               <DeleteOutlined />
             </Button>
           </>

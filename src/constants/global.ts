@@ -1,4 +1,4 @@
-export const genderOption = [
+export const genderOptions = [
     {
         label: "Male",
         value: "male"
@@ -13,7 +13,7 @@ export const genderOption = [
     },
 ]
 
-export const departmentOption = [
+export const departmentOptions = [
     {
         label: "HR",
         value: "hr manager"
@@ -27,7 +27,7 @@ export const departmentOption = [
         value: "management department"
     },
 ]
-export const bloodGroupOption = [
+export const bloodGroupOptions = [
     {
         label: "A+",
         value: "a+"
