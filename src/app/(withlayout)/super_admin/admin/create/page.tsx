@@ -8,28 +8,43 @@ import FormTextArea from "@/components/Forms/FormTextArea";
 import UMBreadCrumb from "@/components/ui/UMBreadCrumb";
 import UploadImage from "@/components/ui/UploadImage";
 import { bloodGroupOptions, genderOptions } from "@/constants/global";
+import { useAddAdminWithFormDataMutation } from "@/redux/api/adminApi";
 import { useDepartmentsQuery } from "@/redux/api/departmentApi";
 import { adminSchema } from "@/schemas/admin";
 import { IDepartment } from "@/types";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Col, Row } from "antd";
 
-const CreateAdmin = () => {
+import { Button, Col, Row, message } from "antd";
+
+const CreateAdminPage = () => {
   const { data, isLoading } = useDepartmentsQuery({ limit: 100, page: 1 });
-
+  const [addAdminWithFormData] = useAddAdminWithFormDataMutation();
   //@ts-ignore
   const departments: IDepartment[] = data?.departments;
 
-  const departmentOptions = departments && departments?.map((department) => {
-    return {
-      label: department?.title,
-      value: department?.id,
-    };
-  });
+  const departmentOptions =
+    departments &&
+    departments?.map((department) => {
+      return {
+        label: department?.title,
+        value: department?.id,
+      };
+    });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (values: any) => {
+    console.log(`values console`, values);
+    const obj = { ...values };
+    const file = obj["file"];
+    delete obj["file"];
+    const data = JSON.stringify(obj);
+    const formData = new FormData();
+    formData.append("file", file as Blob);
+    formData.append("data", data);
+    message.loading("Creating...");
+    
     try {
-      console.log(data);
+      await addAdminWithFormData(formData);
+      message.success("Admin created successfully!");
     } catch (err: any) {
       console.error(err.message);
     }
@@ -163,13 +178,12 @@ const CreateAdmin = () => {
                   marginBottom: "10px",
                 }}
               >
-                <UploadImage />
+                <UploadImage name="file" />
               </Col>
             </Row>
           </div>
 
-          {/* Basic Info */}
-
+          {/* basic info */}
           <div
             style={{
               border: "1px solid #d9d9d9",
@@ -198,7 +212,7 @@ const CreateAdmin = () => {
                   type="email"
                   name="admin.email"
                   size="large"
-                  label="Email"
+                  label="Email address"
                 />
               </Col>
               <Col
@@ -212,7 +226,7 @@ const CreateAdmin = () => {
                   type="text"
                   name="admin.contactNo"
                   size="large"
-                  label="Contact Number"
+                  label="Contact No."
                 />
               </Col>
               <Col
@@ -226,7 +240,7 @@ const CreateAdmin = () => {
                   type="text"
                   name="admin.emergencyContactNo"
                   size="large"
-                  label="Emergency Contact Number"
+                  label="Emergency Contact No."
                 />
               </Col>
               <Col
@@ -238,7 +252,7 @@ const CreateAdmin = () => {
               >
                 <FormDatePicker
                   name="admin.dateOfBirth"
-                  label="Date Of Birth"
+                  label="Date of birth"
                   size="large"
                 />
               </Col>
@@ -251,9 +265,9 @@ const CreateAdmin = () => {
               >
                 <FormSelectField
                   size="large"
-                  name="admin.blood"
+                  name="admin.bloodGroup"
                   options={bloodGroupOptions}
-                  label="Blood Group"
+                  label="Blood group"
                   placeholder="Select"
                 />
               </Col>
@@ -297,4 +311,4 @@ const CreateAdmin = () => {
   );
 };
 
-export default CreateAdmin;
+export default CreateAdminPage;

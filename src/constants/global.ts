@@ -27,38 +27,36 @@ export const departmentOptions = [
         value: "management department"
     },
 ]
+
+// 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-'
 export const bloodGroupOptions = [
     {
         label: "A+",
-        value: "a+"
+        value: "A+"
     },
     {
         label: "A-",
-        value: "a-"
+        value: "A-"
     },
     {
         label: "B+",
-        value: "b+"
+        value: "B+"
     },
     {
         label: "B-",
-        value: "b-"
+        value: "B-"
     },
     {
         label: "AB+",
-        value: "ab+"
-    },
-    {
-        label: "AB",
-        value: "ab"
+        value: "AB+"
     },
     {
         label: "O+",
-        value: "o+"
+        value: "O+"
     },
     {
         label: "O-",
-        value: "o-"
+        value: "O-"
     },
 ]
 
