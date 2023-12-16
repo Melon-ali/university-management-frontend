@@ -27,6 +27,14 @@ export interface IDepartment {
   __v: number;
 }
 
+export interface IAcademicFaculty {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 export interface Name {
   firstName: string;
   lastName: string;
